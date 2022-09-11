@@ -9,7 +9,7 @@ export function genName() {
 		'Kyra Condie',
 		'Jimmy Webb',
 		'Daniel Woods',
-		'Dave McCleod',
+		'Dave MacCleod',
 		'Lynn Hill',
 		'Brooke Rabatou',
 		'Alex Megos',

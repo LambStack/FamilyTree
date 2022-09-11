@@ -1,22 +1,54 @@
-import logo from './logo.svg';
 import './App.css';
 import PersonNode from './data/PersonNode';
 import PersonCard from './components/PersonCard.react';
+import { useState } from 'react';
+
+const styles = {
+	root: {
+		display: 'flex',
+		flexDirection: 'row',
+		border: '1px solid black',
+	},
+	row: {
+		flexDirection: 'column',
+	},
+};
+const rootPersonNode = PersonNode.generateData();
 
 function App() {
-	let rootPersonNode = PersonNode.generateData();
-	// PersonNode.logData(rootPersonNode);
-
-	const cardList = [];
-
-	function genComponentList(node) {
-		cardList.push(<PersonCard personNode={node} key={node.id} />);
+	const [generationsToRender, setGenerationsToRender] = useState([]);
+	function _onClickPersonCard(node) {
+		const nextGeneration = [];
 		for (let child of node.children) {
-			genComponentList(child);
+			nextGeneration.push(child);
 		}
+		setGenerationsToRender([...generationsToRender, nextGeneration]);
 	}
-	genComponentList(rootPersonNode);
-	return <>{cardList}</>;
+
+	return (
+		<div style={styles.root}>
+			<PersonCard
+				personNode={rootPersonNode}
+				key={rootPersonNode.id}
+				onClick={_onClickPersonCard}
+			/>
+			{generationsToRender.map((generation) => {
+				return (
+					<div style={styles.row} key={generation[0].id + 'children'}>
+						{generation.map((personNode) => {
+							return (
+								<PersonCard
+									personNode={personNode}
+									key={personNode.id}
+									onClick={_onClickPersonCard}
+								/>
+							);
+						})}
+					</div>
+				);
+			})}
+		</div>
+	);
 }
 
 export default App;
