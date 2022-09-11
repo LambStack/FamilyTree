@@ -23,6 +23,13 @@ function App() {
 	function _onClickPersonCard(node) {
 		const existingGenerations = generationsToRender;
 		const nextGeneration = [];
+
+		// if this node has no children, show a message
+		if (node.children.length === 0) {
+			alert('Node has no children, refresh to regenerate new data');
+			return;
+		}
+
 		// de-render generations that aren't directly related to clicked node
 		while (
 			existingGenerations.length > 0 &&
