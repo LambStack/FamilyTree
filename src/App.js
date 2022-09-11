@@ -14,15 +14,28 @@ const styles = {
 	},
 };
 const rootPersonNode = PersonNode.generateDataIterative();
+PersonNode.logData(rootPersonNode);
 
 function App() {
 	const [generationsToRender, setGenerationsToRender] = useState([]);
+	const [selectedAncestors, setSelectedAncestors] = useState([rootPersonNode]);
+
 	function _onClickPersonCard(node) {
+		const existingGenerations = generationsToRender;
 		const nextGeneration = [];
+		// de-render generations that aren't directly related to clicked node
+		while (
+			existingGenerations.length > 0 &&
+			!existingGenerations[existingGenerations.length - 1].includes(node)
+		) {
+			existingGenerations.pop();
+		}
+
 		for (let child of node.children) {
 			nextGeneration.push(child);
 		}
-		setGenerationsToRender([...generationsToRender, nextGeneration]);
+		setSelectedAncestors(node.getAncestors());
+		setGenerationsToRender([...existingGenerations, nextGeneration]);
 	}
 
 	return (
@@ -44,6 +57,7 @@ function App() {
 									personNode={personNode}
 									key={personNode.id}
 									onClick={_onClickPersonCard}
+									isSelected={selectedAncestors.includes(personNode)}
 								/>
 							);
 						})}

@@ -4,7 +4,7 @@ export default class PersonNode {
 		const MAX_CHILDREN = 3;
 		const MAX_NODES = 30000;
 
-		let nodeCount = 0;
+		let nodeCount = 1; // start at 1 because we pre-make the root
 
 		// make first ancestor
 		const rootAncestor = new PersonNode(null, {
@@ -16,18 +16,18 @@ export default class PersonNode {
 		const nodesNeedChildren = [rootAncestor];
 
 		while (nodesNeedChildren.length > 0 && nodeCount < MAX_NODES) {
-			console.log(nodeCount);
 			const node = nodesNeedChildren.shift();
-			nodeCount++;
+
 			// add a random number of children
 			const numChildren = Math.ceil(Math.random() * MAX_CHILDREN);
 
 			for (let i = 0; i < numChildren; i++) {
-				const newChild = new PersonNode(node.id, {
+				const newChild = new PersonNode(node, {
 					name: genName(),
 					color: genColor(),
 					generation: node.attributes.generation + 1,
 				});
+				nodeCount++;
 				node.addChild(newChild);
 			}
 
@@ -92,9 +92,9 @@ export default class PersonNode {
 		console.log('total nodes: ', totalNodes);
 	}
 
-	constructor(parentId, attributes = {}, children = []) {
+	constructor(parent, attributes = {}, children = []) {
 		this.id = genUUID();
-		this.parentId = parentId;
+		this.parent = parent;
 		this.children = children;
 		this.attributes = attributes;
 	}
@@ -109,5 +109,15 @@ export default class PersonNode {
 
 	addAttributes(attributes) {
 		this.attributes = { ...this.attributes, ...attributes };
+	}
+
+	getAncestors() {
+		const retVal = [];
+		let node = this;
+		while (node != null) {
+			retVal.push(node);
+			node = node.parent;
+		}
+		return retVal;
 	}
 }
