@@ -19,7 +19,7 @@ export default class PersonNode {
 			const node = nodesNeedChildren.shift();
 
 			// add a random number of children
-			const numChildren = Math.ceil(Math.random() * MAX_CHILDREN);
+			const numChildren = Math.floor(Math.random() * MAX_CHILDREN);
 
 			for (let i = 0; i < numChildren; i++) {
 				const newChild = new PersonNode(node, {
