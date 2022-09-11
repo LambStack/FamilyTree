@@ -7,13 +7,13 @@ const styles = {
 	root: {
 		display: 'flex',
 		flexDirection: 'row',
-		border: '1px solid black',
+		// border: '1px solid black',
 	},
 	row: {
 		flexDirection: 'column',
 	},
 };
-const rootPersonNode = PersonNode.generateData();
+const rootPersonNode = PersonNode.generateDataIterative();
 
 function App() {
 	const [generationsToRender, setGenerationsToRender] = useState([]);
@@ -33,6 +33,9 @@ function App() {
 				onClick={_onClickPersonCard}
 			/>
 			{generationsToRender.map((generation) => {
+				if (generation.length < 1) {
+					return null;
+				}
 				return (
 					<div style={styles.row} key={generation[0].id + 'children'}>
 						{generation.map((personNode) => {
