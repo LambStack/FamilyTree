@@ -112,12 +112,12 @@ export default class PersonNode {
 	}
 
 	getAncestors() {
-		const retVal = [];
+		const ancestors = [];
 		let node = this;
 		while (node != null) {
-			retVal.push(node);
+			ancestors.push(node);
 			node = node.parent;
 		}
-		return retVal;
+		return ancestors;
 	}
 }
